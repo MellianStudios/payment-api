@@ -2,7 +2,9 @@
 
 namespace App\Exceptions;
 
+use App\Enums\ResponseStatus;
 use Illuminate\Foundation\Exceptions\Handler as ExceptionHandler;
+use Illuminate\Support\Facades\Response;
 use Throwable;
 
 class Handler extends ExceptionHandler
@@ -23,8 +25,8 @@ class Handler extends ExceptionHandler
      */
     public function register(): void
     {
-        $this->reportable(function (Throwable $e) {
-            //
+        $this->renderable(function (PaymentFailedException $e) {
+            return Response::json(['status' => ResponseStatus::ERROR, 'message' => $e->getMessage()], 400);
         });
     }
 }

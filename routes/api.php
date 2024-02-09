@@ -1,5 +1,7 @@
 <?php
 
+use App\Http\Controllers\API\OrderController;
+use App\Http\Controllers\API\PaymentController;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
 
@@ -14,6 +16,13 @@ use Illuminate\Support\Facades\Route;
 |
 */
 
-Route::middleware('auth:sanctum')->get('/user', function (Request $request) {
-    return $request->user();
+Route::prefix('/v1')->as('v1.')->group(function () {
+    Route::middleware(['auth:api'])->group(function () {
+        Route::post('order', OrderController::class)
+            ->name('order');
+
+        Route::post('payment', PaymentController::class)
+            ->name('payment');
+    });
 });
+
